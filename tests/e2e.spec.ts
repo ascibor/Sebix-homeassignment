@@ -4,7 +4,7 @@ import POManager from '../page_objects/POManager';
 test('Verify if a product with ID 56 from Shrits cateogry has the proper name Mango Shrit', async ({page}) => {
     const poManager = new POManager(page);
     
-    await poManager.productCategoryPage().navigate('shirts');
+    await page.goto('/product-category/shirts/');
     
     const rowLocator = page.getByRole('listitem');
     
@@ -17,7 +17,7 @@ test('Verify if a product with ID 56 from Shrits cateogry has the proper name Ma
  test('Verify product name on product page', async ({page}) => {
     const poManager = new POManager(page);
 
-    await poManager.productPage().navigate('manago-shirt');
+    await page.goto('/product/manago-shirt/');
 
     const productTitleSelector = await poManager.productPage().getProductTitle();
 
@@ -27,11 +27,11 @@ test('Verify if a product with ID 56 from Shrits cateogry has the proper name Ma
 test('Verify shipping prices in the cart', async ({page}) => {
     const poManager = new POManager(page);
     //add product to the cart
-    await poManager.productCategoryPage().navigate('shirts');
+    await page.goto('/product-category/shirts/');
     await poManager.productCategoryPage().addToCart('Manago Shirt');
 
     //navigate to the cart
-    await poManager.cartPage().navigate();
+    await page.goto('/cart/');
     const flatRateDefault = await poManager.cartPage().flatRate();
     const parsedFlatRateDefault = parseFloat(flatRateDefault)
     // check flat rate for PL
@@ -68,10 +68,10 @@ test('Verify shipping prices in the cart', async ({page}) => {
 test('Make sure that product quantity is changing total value', async ({page}) => {
     const poManager = new POManager(page);
      //add product to the cart
-     await poManager.productCategoryPage().navigate('dresses');
+     await page.goto('/product-category/dresses/');
      await poManager.productCategoryPage().addToCart('Magnolia Dress');
      //go to cart
-     await poManager.cartPage().navigate();
+     await page.goto('/cart/');
      //take price of manoliaDress - it is not needed in this test implementation, can be useful when we would like to count price dynamically
     const magnoliaDressCost = await poManager.cartPage().priceCartView('Magnolia Dress');
     // + Add product 
@@ -93,15 +93,15 @@ test('Make sure that product quantity is changing total value', async ({page}) =
     const poManager = new POManager(page);
 
     //check prices on product pages
-    await poManager.productPage().navigate('blue-magawi-shoes');
+    await page.goto('/product/blue-magawi-shoes');
     const blueMagawiShoesPricProductPage = await poManager.productPage().getPrice()
     console.log(blueMagawiShoesPricProductPage);
     
-    await poManager.productPage().navigate('manago-shirt');
+    await page.goto('/product/manago-shirt');
     const managoShirtPriceProductPage = await poManager.productPage().getPrice()
     console.log(managoShirtPriceProductPage);
 
-    await poManager.productPage().navigate('amari-shirt');
+    await page.goto('/product/amari-shirt');
     const amariShritPriceProductPage = await poManager.productPage().getPrice()
     console.log(amariShritPriceProductPage);
 
@@ -114,7 +114,7 @@ test('Make sure that product quantity is changing total value', async ({page}) =
     await poManager.productCategoryPage().addToCart('Blue Magawi Shoes');
    
     //Go to cart
-    await poManager.cartPage().navigate();
+    await page.goto('/cart/');;
 
     //compare prices between cart and product pages
     async function comparePrices(productPagePrice: string, cartPagePrice: string, productName: string): Promise<void> {
